@@ -1,4 +1,4 @@
-# mesence-ops
+# MesenCE-ops
 
 `nesdev-org/MesenCE` を直接フォークした `akiyan/MesenCE` の変更情報、導入手順、検証記録を管理する。
 実装と試験、機能や不具合の Issue は本体に置く。 [MesenCE 本体](https://github.com/akiyan/MesenCE/tree/akiyan) · [Issue](https://github.com/akiyan/MesenCE/issues)
