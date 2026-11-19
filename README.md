@@ -11,7 +11,7 @@
 - [初回の検証記録](releases/2026-11-19.md)
 - [本体の CLI 文書（英語）](https://github.com/akiyan/MesenCE/blob/akiyan/docs/headless.md)
 
-初期の外部ブリッジ実験は参照資料として公開している。 [mesen-for-ai-ops](https://github.com/akiyan/mesen-for-ai-ops)
+外部ブリッジ方式の実装は上流の `mesen-for-ai` を参照する。 [上流リポジトリ](https://github.com/paulomanrique/mesen-for-ai)
 
 ここに置く文書は MIT ライセンス。本体のライセンスは上流に従う。
 公開試験の ROM は試験コードから生成する。 [文書のライセンス](LICENSE) · [本体のライセンス](https://github.com/akiyan/MesenCE/blob/akiyan/LICENSE)
