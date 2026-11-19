@@ -9,6 +9,7 @@
 - [導入と試験](docs/setup.md)
 - [上流への追従](docs/upstream-sync.md)
 - [初回の検証記録](releases/2026-11-19.md)
+- [名前付きステート・外部制御・画面・音声の検証記録](releases/2026-11-19-automation.md)
 - [本体の CLI 文書（英語）](https://github.com/akiyan/MesenCE/blob/akiyan/docs/headless.md)
 
 外部ブリッジ方式の実装は上流の `mesen-for-ai` を参照する。 [上流リポジトリ](https://github.com/paulomanrique/mesen-for-ai)

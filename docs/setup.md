@@ -8,10 +8,14 @@ git clone --branch akiyan https://github.com/akiyan/MesenCE.git mesence
 cd mesence
 make USE_GCC=true LTO=false -j4 headless
 python3 tests/headless_snes.py
+python3 tests/headless_states.py
+python3 tests/headless_control.py
+python3 tests/headless_ppu.py
+python3 tests/headless_audio.py
 ```
 
-試験は自作 LoROM を生成し、B ボタンを読むフレーム、WRAM の条件、PNG を確認する。
-新しいプロファイルから同じ入力を再実行し、観測結果を比較する。
+各試験は自作 LoROM を生成する。
+名前付きステートの復元と入力リプレイ、実行の中断・続行、画面と走査線の観測、音声と APU イベントを個別に確認する。
 実行ファイルと作業先は試験の `--binary` と `--work-dir` で指定できる。 [試験コード](https://github.com/akiyan/MesenCE/blob/akiyan/tests/headless_snes.py)
 
 個別の採取では ROM と Lua スクリプトを指定する。
@@ -22,3 +26,15 @@ bin/mesen-headless --home /absolute/path/to/new-profile --timeout 30 +  /absolut
 ```
 
 終了コード、プロファイル、Lua の使い方は本体の文書を参照する。 [CLI の仕様](https://github.com/akiyan/MesenCE/blob/akiyan/docs/headless.md)
+
+## 常駐セッション
+
+`--control` を指定すると ROM を開き、外部クライアントから最初の実行要求を待つ。
+別のプロファイルでも名前付きステートを使う場合は `--state-dir` で共通のディレクトリを指定する。
+
+```sh
+bin/mesen-headless --home /absolute/path/to/new-profile \
+  --state-dir /absolute/path/to/states --control /absolute/path/to/control.sock input.sfc
+```
+
+コマンドと応答の形式は本体の文書を参照する。 [外部制御](https://github.com/akiyan/MesenCE/blob/akiyan/docs/control.md) · [名前付きステート](https://github.com/akiyan/MesenCE/blob/akiyan/docs/states.md)
