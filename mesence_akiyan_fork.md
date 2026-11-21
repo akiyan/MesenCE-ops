@@ -4,6 +4,47 @@
 初回の基準は 2.2.1 の `20ba206cef5ba207c21203176d02cb9f43dda9fb`。
 独自コミットのメッセージはこのページの URL とする。 [本体](https://github.com/akiyan/MesenCE/tree/akiyan) · [基準コミット](https://github.com/nesdev-org/MesenCE/commit/20ba206cef5ba207c21203176d02cb9f43dda9fb)
 
+## AI エージェント向け操作の比較
+
+公式本家はフォーク元の 2.2.1 が基準です。比較対象はスーパーファミコン（SFC）とゲームギア（GG）です。右の4列は `akiyan` 版の操作経路で、単体 CLI は `mesen-headless` の Lua バッチ実行を指します。 [本家の TestRunner](https://github.com/nesdev-org/MesenCE/blob/20ba206cef5ba207c21203176d02cb9f43dda9fb/UI/Utilities/TestRunner.cs) · [本家の Lua API](https://github.com/nesdev-org/MesenCE/blob/20ba206cef5ba207c21203176d02cb9f43dda9fb/Core/Debugger/LuaApi.cpp)
+
+**✗ 非対応　△ GUI で可　◯ 自動操作可**
+
+機種の指定がないセルは両機種に共通です。`◯ SFC` と `△ SFC` は SFC のみ対応します。
+
+### 公式本家で GUI 操作が必要、または非対応だった操作
+
+| 操作 | 公式本家 | GDB | Unix 制御ソケット | MCP | 単体 CLI |
+|---|:---:|:---:|:---:|:---:|:---:|
+| フレーム 0 で外部コマンド待ち | ✗ | ✗ | ◯ SFC | ✗ | ✗ |
+| 切断時のフレーム停止・再接続 | ✗ | ✗ | ◯ SFC | ✗ | ✗ |
+| 空の実行プロファイル指定・初期状態固定 | ✗ | ✗ | ◯ SFC | ✗ | ◯ |
+| 名前付きステート（フレーム数・押下込み） | ✗ | ✗ | ◯ SFC | ✗ | ✗ |
+| CPU・PPU・WRAM・完成 PNG の時刻付き取得 | ✗ | ✗ | ✗ | ✗ | ◯ SFC |
+| ラスタートレース（PPU・DMA・HDMA・割り込み） | △ SFC | ✗ | ✗ | ✗ | ◯ SFC |
+| 短区間 WAV 採取 | △ | ✗ | ✗ | ✗ | ◯ SFC |
+| WAV・SPC/DSP イベントの同期採取 | ✗ | ✗ | ✗ | ✗ | ◯ SFC |
+
+### 公式本家で自動操作でき、操作経路が増えたもの
+
+**←** 本家から引き継いだ経路　**◯** フォークで増えた経路。`Lua ←` は、新設の単体 CLI で本家の Lua API を使うことを示します。
+
+| 操作 | 公式本家 | GDB | Unix 制御ソケット | MCP | 単体 CLI |
+|---|:---:|:---:|:---:|:---:|:---:|
+| ヘッドレス Lua 起動・終了コード | ◯ `--testRunner` | ✗ | ✗ | ✗ | **◯**（Lua ←） |
+| 実時間タイムアウト | ◯ `--testRunner` | ✗ | **◯** SFC | ✗ | **◯** |
+| 一時停止・N フレーム送り | ◯ Lua | ✗ | **◯** SFC | ✗ | **◯**（Lua ←） |
+| 命令・走査線ステップ | ◯ Lua | ✗ | ✗ | ✗ | **◯**（Lua ←） |
+| 条件停止・メモリアクセス監視 | ◯ Lua | ✗ | ✗ | ✗ | **◯**（Lua ←） |
+| フレーム・マスタークロック取得 | ◯ Lua | ✗ | **◯** SFC | ✗ | **◯**（Lua ←） |
+| RAM 読取 | ◯ Lua | ✗ | **◯** SFC | ✗ | **◯**（Lua ←） |
+| CPU 状態取得・メモリ書込 | ◯ Lua | ✗ | ✗ | ✗ | **◯**（Lua ←） |
+| パッド操作・フレーム指定の入力列 | ◯ Lua | ✗ | **◯** SFC | ✗ | **◯**（Lua ←） |
+| PNG・画素取得 | ◯ Lua | ✗ | ✗ | ✗ | **◯**（Lua ←） |
+| ステート保存・復元 | ◯ Lua | ✗ | **◯** SFC | ✗ | **◯**（Lua ←） |
+
+Unix 制御ソケットの `--control` は SFC 専用です。単体 CLI は `.gg` も扱い、ゲームギアの PNG は 160×144 で前フレームとの合成なしです。ゲームギアの Start 入力は Lua の `pause` を使います。 [CLI 仕様](https://github.com/akiyan/MesenCE/blob/akiyan/docs/headless.md) · [ソケット仕様](https://github.com/akiyan/MesenCE/blob/akiyan/docs/control.md)
+
 ## Linux 向けヘッドレス実行
 
 `make headless` で、本体と同じエミュレーションコアを使う `bin/mesen-headless` をビルドする。
