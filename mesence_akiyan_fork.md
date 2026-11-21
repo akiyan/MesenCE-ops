@@ -51,7 +51,8 @@ Unix 制御ソケットの `--control` は SFC 専用です。単体 CLI は `.g
 実行時に ROM、Lua スクリプト、新規または空の作業プロファイルを指定する。
 SFC は 1P 標準パッド、初期 RAM ゼロ、フレームスキップ無効の設定で起動する。
 Lua から入力、メモリ、画面を観測し、`emu.stop(code)` で結果を終了コードに渡す。
-プロセスはタイムアウトを終了コード 124 で報告する。 [CLI の仕様](https://github.com/akiyan/MesenCE/blob/akiyan/docs/headless.md)
+プロセスはタイムアウトを終了コード 124 で報告する。
+フレームの待ちを入れず、ホストの速さで動かす（ROM の読み込みで最高速のフラグが消えるため、速度の設定を 0 にする）。 [Issue #6](https://github.com/akiyan/MesenCE/issues/6) [CLI の仕様](https://github.com/akiyan/MesenCE/blob/akiyan/docs/headless.md)
 
 ## マスターシステム・ゲームギアの一括実行
 
