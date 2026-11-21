@@ -12,6 +12,13 @@ SFC は 1P 標準パッド、初期 RAM ゼロ、フレームスキップ無効�
 Lua から入力、メモリ、画面を観測し、`emu.stop(code)` で結果を終了コードに渡す。
 プロセスはタイムアウトを終了コード 124 で報告する。 [CLI の仕様](https://github.com/akiyan/MesenCE/blob/akiyan/docs/headless.md)
 
+## マスターシステム・ゲームギアの一括実行
+
+ROM と Lua スクリプトによる一括実行で、マスターシステムとゲームギアの ROM も扱う。拡張子 `.gg` でゲームギアになる。
+1P に標準パッドを設定し、RAM を 0 で初期化する。画面は各機種の表示範囲（ゲームギアは 160×144）で取得し、ゲームギアの前フレームとの合成はしない。
+RAM の初期状態を固定したときは VDP を走査線 0 から始め、同じ入力の実行が同じフレームで進むようにする（上流は電源投入ごとに 0〜200 の乱数）。
+常駐の外部制御（`--control`）は SFC のみ。 [仕様](https://github.com/akiyan/MesenCE/blob/akiyan/docs/headless.md) · [Issue #5](https://github.com/akiyan/MesenCE/issues/5)
+
 ## 名前付きステート
 
 停止中のセッションで `save 名前` と `load 名前` を使う。
