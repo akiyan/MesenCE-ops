@@ -13,10 +13,11 @@ python3 tests/headless_states.py
 python3 tests/headless_control.py
 python3 tests/headless_ppu.py
 python3 tests/headless_audio.py
+python3 tests/headless_gg_audio.py
 ```
 
 各試験は自作 LoROM（`headless_gg.py` はゲームギアの ROM）を生成する。
-名前付きステートの復元と入力リプレイ、実行の中断・続行、画面と走査線の観測、音声と APU イベントを個別に確認する。
+名前付きステートの復元と入力リプレイ、実行の中断・続行、画面と走査線の観測、音声と APU イベント、ゲームギアの音声と PSG の書き込みを個別に確認する。
 実行ファイルと作業先は試験の `--binary` と `--work-dir` で指定できる。 [試験コード](https://github.com/akiyan/MesenCE/blob/akiyan/tests/headless_snes.py)
 
 個別の採取では ROM と Lua スクリプトを指定する。

@@ -22,8 +22,9 @@
 | 名前付きステート（フレーム数・押下込み） | ✗ | ✗ | ◯ SFC | ✗ | ✗ |
 | CPU・PPU・WRAM・完成 PNG の時刻付き取得 | ✗ | ✗ | ✗ | ✗ | ◯ SFC |
 | ラスタートレース（PPU・DMA・HDMA・割り込み） | △ SFC | ✗ | ✗ | ✗ | ◯ SFC |
-| 短区間 WAV 採取 | △ | ✗ | ✗ | ✗ | ◯ SFC |
-| WAV・SPC/DSP イベントの同期採取 | ✗ | ✗ | ✗ | ✗ | ◯ SFC |
+| 短区間 WAV 採取 | △ | ✗ | ✗ | ✗ | ◯ |
+| WAV と音源イベント（SFC の SPC/DSP、GG の PSG）の同期採取 | ✗ | ✗ | ✗ | ✗ | ◯ |
+| I/O ポートの読み書き監視（GG の PSG など） | ✗ | ✗ | ✗ | ✗ | ◯ GG |
 
 ### 公式本家で自動操作でき、操作経路が増えたもの
 
@@ -79,7 +80,13 @@ RAM の初期状態を固定したときは VDP を走査線 0 から始め、�
 Lua から CPU・WRAM と画面の状態を取得し、観測時点と描画済みフレームの時刻を照合できる。
 フレーム内の PPU レジスタ、DMA、HDMA、割り込みを走査線とクロック付きで記録する。 [仕様](https://github.com/akiyan/MesenCE/blob/akiyan/docs/ppu.md) · [Issue #3](https://github.com/akiyan/MesenCE/issues/3)
 
-## WAV と APU イベント
+## WAV と音源イベント
 
 指定フレーム分のミキサー出力を WAV に記録する。
-CPU と SPC700 のポート通信、DSP への書き込み、サンプル位置をエミュレーター内の時刻で比較できる。 [仕様](https://github.com/akiyan/MesenCE/blob/akiyan/docs/audio.md) · [Issue #4](https://github.com/akiyan/MesenCE/issues/4)
+SFC は CPU と SPC700 のポート通信、DSP への書き込み、マスターシステムとゲームギアは PSG とステレオの書き込みを、サンプル位置とともにエミュレーター内の時刻で比較できる。
+ヘッドレス実行では PSG の各チャンネルを GUI の既定と同じ音量にする（コアの既定は無音）。 [仕様](https://github.com/akiyan/MesenCE/blob/akiyan/docs/audio.md) · [Issue #4](https://github.com/akiyan/MesenCE/issues/4) · [Issue #7](https://github.com/akiyan/MesenCE/issues/7)
+
+## I/O ポートの監視
+
+Lua のメモリコールバックで `emu.memType.smsPort` を指定すると、マスターシステムとゲームギアの I/O ポートの読み書きで呼ばれる。
+上流ではポートに絶対アドレスがないため、このメモリ種別のコールバックが一度も呼ばれなかった。 [仕様](https://github.com/akiyan/MesenCE/blob/akiyan/docs/headless.md) · [Issue #7](https://github.com/akiyan/MesenCE/issues/7)
