@@ -24,6 +24,8 @@
 | ラスタートレース（PPU・DMA・HDMA・割り込み） | △ SFC | ✗ | ✗ | ✗ | ◯ SFC |
 | 短区間 WAV 採取 | △ | ✗ | ✗ | ✗ | ◯ |
 | WAV と音源イベント（SFC の SPC/DSP、GG の PSG）の同期採取 | ✗ | ✗ | ✗ | ✗ | ◯ |
+| 長さを先に決めない全編の録音（WAV のみ） | ✗ | ✗ | ✗ | ✗ | ◯ |
+| 全フレームの画素のバイト列での取得（エンコーダーへ直接） | ✗ | ✗ | ✗ | ✗ | ◯ |
 | I/O ポートの読み書き監視（GG の PSG など） | ✗ | ✗ | ✗ | ✗ | ◯ GG |
 
 ### 公式本家で自動操作でき、操作経路が増えたもの
@@ -85,6 +87,11 @@ Lua から CPU・WRAM と画面の状態を取得し、観測時点と描画済�
 指定フレーム分のミキサー出力を WAV に記録する。
 SFC は CPU と SPC700 のポート通信、DSP への書き込み、マスターシステムとゲームギアは PSG とステレオの書き込みを、サンプル位置とともにエミュレーター内の時刻で比較できる。
 ヘッドレス実行では PSG の各チャンネルを GUI の既定と同じ音量にする（コアの既定は無音）。 [仕様](https://github.com/akiyan/MesenCE/blob/akiyan/docs/audio.md) · [Issue #4](https://github.com/akiyan/MesenCE/issues/4) · [Issue #7](https://github.com/akiyan/MesenCE/issues/7)
+
+## 全編の高速な録画
+
+`emu.getScreenBytes()` は、`emu.getScreenBuffer()` と同じ画素をバイト列（`bgr0`）と幅・高さで返す。画素ごとの表も PNG も作らないため、全フレームを名前付きパイプからエンコーダーへ渡しても、実行の速さがほとんど落ちない。
+`emu.startAudioCapture` のイベントのパスに `nil` を渡すと WAV だけを記録する。`emu.stopAudioCapture()` は次のフレームの終わりで採取を完了するので、長さを先に決めなくてよい。採取の上限は 1,080,000 フレーム（5 時間）。 [仕様](https://github.com/akiyan/MesenCE/blob/akiyan/docs/audio.md) · [使い方](https://github.com/akiyan/MesenCE/blob/akiyan/docs/AGENT_GUIDE.md) · [Issue #9](https://github.com/akiyan/MesenCE/issues/9)
 
 ## I/O ポートの監視
 
