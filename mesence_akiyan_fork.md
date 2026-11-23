@@ -93,6 +93,13 @@ SFC は CPU と SPC700 のポート通信、DSP への書き込み、マスタ�
 `emu.getScreenBytes()` は、`emu.getScreenBuffer()` と同じ画素をバイト列（`bgr0`）と幅・高さで返す。画素ごとの表も PNG も作らないため、全フレームを名前付きパイプからエンコーダーへ渡しても、実行の速さがほとんど落ちない。
 `emu.startAudioCapture` のイベントのパスに `nil` を渡すと WAV だけを記録する。`emu.stopAudioCapture()` は次のフレームの終わりで採取を完了するので、長さを先に決めなくてよい。採取の上限は 1,080,000 フレーム（5 時間）。 [仕様](https://github.com/akiyan/MesenCE/blob/akiyan/docs/audio.md) · [使い方](https://github.com/akiyan/MesenCE/blob/akiyan/docs/AGENT_GUIDE.md) · [Issue #9](https://github.com/akiyan/MesenCE/issues/9)
 
+## 負荷に左右されないスクリーンショット
+
+`emu.takeScreenshot()` は、映像のデコーダーに渡した最後のフレームの変換が終わるのを待ってから PNG を作る。
+デコーダーは別のスレッドで動き、`endFrame` では今終わったフレームがまだ渡っていないため、PNG は 1 つ前のフレームになる。
+上流は変換の終わりを待たないので、ホストの負荷が高いと 2 つ前のフレームを返すことがあった。
+変換が済んでいれば待たない。今終わったフレームの画素は `emu.getScreenBytes()` で取る。 [仕様](https://github.com/akiyan/MesenCE/blob/akiyan/docs/AGENT_GUIDE.md) · [Issue #10](https://github.com/akiyan/MesenCE/issues/10)
+
 ## I/O ポートの監視
 
 Lua のメモリコールバックで `emu.memType.smsPort` を指定すると、マスターシステムとゲームギアの I/O ポートの読み書きで呼ばれる。
