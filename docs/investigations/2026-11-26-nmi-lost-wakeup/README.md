@@ -123,6 +123,11 @@ field 1 bit 3 111111111111111111111111110000000000000000000000000000000111111111
 - 幅や並びが違えば、CPUが割り込みを見る時点か、サイクルの長さの扱いの差です。
 - 食い違いがあれば、その表が上流（nesdev-org/MesenCE）へ報告する内容になります。今のところ、比べる相手の表はありません。
 
+## フォークのPR
+
+テストROMの生成・試験をフォークの `tests/` に入れたPR：https://github.com/akiyan/MesenCE/pull/11
+（`tests/nmi_boundary_rom.py`、`tests/headless_nmi_boundary.py`、`tests/headless_nmi_boundary.lua`）。AIで書いたもので、本家へは参考として示す。
+
 ## 並べた動画（上流への報告の参考）
 
 ロールの後半を、未修正のMesenCE・試験版（奇数側のフレームだけNMIを4マスタークロック遅らせる。`MESEN_TEST_NMI_HCLOCK=10`、
