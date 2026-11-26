@@ -10,6 +10,7 @@
 - [上流への追従](docs/upstream-sync.md)
 - [初回の検証記録](releases/2026-11-19.md)
 - [名前付きステート・外部制御・画面・音声の検証記録](releases/2026-11-19-automation.md)
+- [NMIの取りこぼしで進行が止まる場面の調査（不具合ではないと判断）](docs/investigations/2026-11-26-nmi-lost-wakeup/README.md)
 - [本体の CLI 文書（英語）](https://github.com/akiyan/MesenCE/blob/akiyan/docs/headless.md)
 - [AI エージェント向け操作ガイド（英語）](https://github.com/akiyan/MesenCE/blob/akiyan/docs/AGENT_GUIDE.md)
 

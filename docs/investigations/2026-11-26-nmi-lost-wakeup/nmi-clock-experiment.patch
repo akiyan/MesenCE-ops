@@ -1,0 +1,36 @@
+--- a/Core/SNES/InternalRegisters.h	2026-11-19 11:25:40.655413131 +0900
++++ b/Core/SNES/InternalRegisters.h	2026-11-26 15:46:32.967916608 +0900
+@@ -11,6 +11,13 @@
+ class SnesMemoryManager;
+ class SnesControlManager;
+ 
++#include <cstdlib>
++// Timing experiment only: MESEN_TEST_NMI_HCLOCK = the line's master clock where the CPU gets the NMI (6 as shipped).
++static inline int NmiTestBase() { static int v = -1; if(v < 0) { const char* e = getenv("MESEN_TEST_NMI_HCLOCK"); v = e ? atoi(e) : 6; } return v; }
++// MESEN_TEST_NMI_PARITY = 0 or 1: only the frames of that parity get the other clock (a shift against the frame before).
++static inline int NmiTestParity() { static int v = -2; if(v == -2) { const char* e = getenv("MESEN_TEST_NMI_PARITY"); v = e ? atoi(e) : -1; } return v; }
++#define NmiTestClock() ((NmiTestParity() < 0 || (int)(_ppu->GetFrameCount() & 1) == NmiTestParity()) ? NmiTestBase() : 6)
++
+ class InternalRegisters final : public ISerializable
+ {
+ private:
+@@ -134,6 +141,10 @@
+ 
+ 	uint16_t hClock = _memoryManager->GetHClock();
+ 
++	if(NmiTestClock() != 6 && hClock == NmiTestClock() && _state.EnableNmi && _ppu->GetScanline() + (NmiTestClock() >= 1000 ? 1 : 0) == _ppu->GetNmiScanline()) {
++		_cpu->SetNmiFlag(1);   // timing experiment: the NMI at another clock of the line
++	}
++
+ 	if(hClock > 10) {
+ 		_hCounter++;
+ 	} else if(hClock == 10) {
+@@ -144,7 +155,7 @@
+ 			_vCounter++;
+ 		}
+ 
+-		if(_state.EnableNmi && _ppu->GetScanline() == _ppu->GetNmiScanline()) {
++		if(NmiTestClock() == 6 && _state.EnableNmi && _ppu->GetScanline() == _ppu->GetNmiScanline()) {
+ 			_cpu->SetNmiFlag(1);
+ 		}
+ 	} else if(hClock == 2) {
