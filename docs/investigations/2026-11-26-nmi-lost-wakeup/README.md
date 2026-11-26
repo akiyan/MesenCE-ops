@@ -125,8 +125,10 @@ field 1 bit 3 111111111111111111111111110000000000000000000000000000000111111111
 
 ## フォークのPR
 
-テストROMの生成・試験をフォークの `tests/` に入れたPR：https://github.com/akiyan/MesenCE/pull/11
-（`tests/nmi_boundary_rom.py`、`tests/headless_nmi_boundary.py`、`tests/headless_nmi_boundary.lua`）。AIで書いたもので、本家へは参考として示す。
+テストROMの生成と、本家の `--testrunner` で表を検査するLuaを、フォークの `master`（本家masterと同じ a8e5d023）に
+`Tests/SnesNmiBoundary/` として入れたPR：https://github.com/akiyan/MesenCE/pull/12 。AIで書いたもので、本家へは参考として示す。
+本家masterをビルドして `--testrunner` で動かし、表が2.2.1と同じこと（終了コード0）、期待値を変えると1になることを確かめた。
+最初に `akiyan` ブランチ向けに開いた #11 は、本家に合わせるため #12 に置き換えて閉じた。
 
 ## 並べた動画（上流への報告の参考）
 
